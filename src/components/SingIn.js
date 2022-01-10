@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -31,16 +31,25 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+export default function SignIn({ setName }) {
+  const [disabled, setDisabled] = useState(true);
+  const [string, setString] = useState("");
+  console.log({ disabled, string });
+
+  useEffect(() => {
+    const disabled = string === "";
+    setDisabled(disabled);
+  }, [string]);
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   // eslint-disable-next-line no-console
+  //   console.log({
+  //     email: data.get("email"),
+  //     password: data.get("password"),
+  //   });
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -59,7 +68,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -71,12 +80,17 @@ export default function SignIn() {
               label="ニックネーム"
               name="name"
               autoFocus
+              onChange={(e) => setString(e.target.value)}
             />
             <Button
-              type="submit"
+              disabled={disabled}
+              type="button"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => {
+                setName(string);
+              }}
             >
               はじめる
             </Button>
